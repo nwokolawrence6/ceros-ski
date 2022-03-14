@@ -107,11 +107,6 @@ export class Skier extends Entity {
   curAnimationFrame = 0;
   
   /**
-   * Current game time set form game time class.
-   * @type {number}
-   */
-  gameTime = 0
-  /**
    * The time in ms of the last frame change. Used to provide a consistent framerate.
    * @type {number}
    */
@@ -151,7 +146,7 @@ export class Skier extends Entity {
       JUMP_IMAGES,
       false,
       () => {
-       this.jumpCompleted()
+        this.jumpCompleted()
       }
     );
   }
@@ -161,11 +156,12 @@ export class Skier extends Entity {
    * sets state to SKIING and set the correct direction of the Skier.
    *
    */
-  jumpCompleted () {
+  jumpCompleted() {
     this.setAnimation();
     this.state = STATE_SKIING
     this.setDirectionalImage()
   }
+  
   /**
    * Is the skier currently in the skiing state
    *
@@ -274,7 +270,6 @@ export class Skier extends Entity {
    * Move the skier and check to see if they've hit an obstacle. The skier only moves in the skiing state.
    */
   update(gameTime) {
-    this.gameTime = gameTime
     if (this.isSkiing()) {
       this.move();
       this.checkIfHitObstacle();
@@ -391,7 +386,7 @@ export class Skier extends Entity {
         this.turnDown();
         break;
       case KEYS.SPACE_BAR:
-        // this.jumpUp()
+        this.jump()
         break;
       default:
         handled = false;
@@ -462,12 +457,11 @@ export class Skier extends Entity {
    * Jump Up to escape obstacle.
    * If they're in the crashed state, do nothing as you can't move up if you're crashed.
    */
-  jumpUp() {
+  jump() {
     if (this.isCrashed()) {
       return;
     }
-    this.animate()
-    // this.setDirection(DIRECTION_DOWN);
+    this.state = STATE_JUMPING
   }
   
   /**
@@ -492,25 +486,36 @@ export class Skier extends Entity {
    */
   checkIfHitObstacle() {
     const skierBounds = this.getBounds();
-    
     const collision = this.obstacleManager.getObstacles().find((obstacle) => {
       const obstacleBounds = obstacle.getBounds();
       const intersectingWithTwoRects = intersectTwoRects(skierBounds, obstacleBounds)
-      console.log("Here", this.state)
-      if (intersectingWithTwoRects && obstacle.imageName === IMAGE_NAMES.JUMP_RAMP && this.state !== STATE_JUMPING) {
-        this.state = STATE_JUMPING;
-        return false
-      }
-      return intersectingWithTwoRects;
+      return this.canJump(obstacle.imageName, intersectingWithTwoRects)
     });
-    
     if (collision) {
       this.crash();
     }
   }
   
   /**
-   * Crash the skier. Set the state to crashed, set the speed to zero cause you can't move when crashed and update the
+   * Check for jump state, verify if the Skier can jump the object and update state accordingly
+   * @param imageName
+   * @param intersectingWithTwoRects
+   * */
+  
+  canJump(imageName, intersectingWithTwoRects) {
+    if(!intersectingWithTwoRects) return intersectingWithTwoRects
+    if (imageName === IMAGE_NAMES.JUMP_RAMP) {
+      this.state = STATE_JUMPING;
+      return false
+    }
+    if(imageName === IMAGE_NAMES.ROCK1 && imageName === IMAGE_NAMES.ROCK2 && this.state === STATE_JUMPING) {
+      return false
+    }
+    return intersectingWithTwoRects
+  }
+  
+  /**
+   * Crash the skier. Set the state to crashed, set the speed to zero because you can't move when crashed and update the
    * image.
    */
   crash() {
@@ -519,11 +524,6 @@ export class Skier extends Entity {
     this.imageName = IMAGE_NAMES.SKIER_CRASH;
   }
   
-  jump() {
-    this.state = STATE_JUMPING
-    this.speed = 20
-    
-  }
   
   /**
    * Change the skier back to the skiing state, get them moving again at the starting speed and set them facing
