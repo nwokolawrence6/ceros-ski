@@ -12,7 +12,7 @@ import {Animation} from "../Core/Animation";
  * The skier starts running at this speed. Saved in case speed needs to be reset at any point.
  * @type {number}
  */
-const STARTING_SPEED = 10;
+const STARTING_SPEED = 8;
 
 /**
  * The different states the skier can be in.
