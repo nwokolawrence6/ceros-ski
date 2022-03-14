@@ -275,6 +275,7 @@ export class Skier extends Entity {
       this.checkIfHitObstacle();
     }
     if (this.isJumping()) {
+      this.checkIfHitObstacle();
       this.animate(gameTime);
     }
   }
@@ -456,9 +457,13 @@ export class Skier extends Entity {
   /**
    * Jump Up to escape obstacle.
    * If they're in the crashed state, do nothing as you can't move up if you're crashed.
+   * Checks if its already jumping to avoid jumping while still in the air
    */
   jump() {
     if (this.isCrashed()) {
+      return;
+    }
+    if (this.isJumping()) {
       return;
     }
     this.state = STATE_JUMPING
@@ -508,7 +513,7 @@ export class Skier extends Entity {
       this.state = STATE_JUMPING;
       return false
     }
-    if(imageName === IMAGE_NAMES.ROCK1 && imageName === IMAGE_NAMES.ROCK2 && this.state === STATE_JUMPING) {
+    if(imageName === IMAGE_NAMES.ROCK1 || imageName === IMAGE_NAMES.ROCK2 && this.state === STATE_JUMPING) {
       return false
     }
     return intersectingWithTwoRects

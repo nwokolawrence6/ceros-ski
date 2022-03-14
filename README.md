@@ -25,3 +25,4 @@ npm run dev
 2. Studied the Rhino animations cycle and replicated the same process for the Skier jump transition.
 3. Updated the checkIfHitObstacle to check for Image name which contains the name JUMP_RAMP to avoid setting crashed to true when it's a JUMP_RAMP.
 4. Added a check for when it's obstacle is a ROCK1 or ROCK2 which can be jumped this will check if STATE this equal to STATE_JUMPING then crashed will not be set to true.
+5. Checks if it's already jumping to avoid jumping while it sill in the air.
