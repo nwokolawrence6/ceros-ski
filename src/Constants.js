@@ -61,7 +61,7 @@ export const IMAGES = [
     { name: IMAGE_NAMES.SKIER_JUMP2, url: 'img/skier_jump_2.png' },
     { name: IMAGE_NAMES.SKIER_JUMP3, url: 'img/skier_jump_3.png' },
     { name: IMAGE_NAMES.SKIER_JUMP4, url: 'img/skier_jump_4.png' },
-    { name: IMAGE_NAMES.SKIER_JUMP4, url: 'img/skier_jump_5.png' },
+    { name: IMAGE_NAMES.SKIER_JUMP5, url: 'img/skier_jump_5.png' },
     { name: IMAGE_NAMES.JUMP_RAMP, url: 'img/jump_ramp.png' },
 ];
 
