@@ -11,8 +11,8 @@ import { randomInt } from '../../Core/Utils';
  * @type {string[]}
  */
 const OBSTACLE_TYPES = [
-    // IMAGE_NAMES.TREE,
-    // IMAGE_NAMES.TREE_CLUSTER,
+    IMAGE_NAMES.TREE,
+    IMAGE_NAMES.TREE_CLUSTER,
     IMAGE_NAMES.ROCK1,
     IMAGE_NAMES.ROCK2,
     IMAGE_NAMES.JUMP_RAMP,
